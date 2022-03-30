@@ -1,0 +1,13 @@
+#!/bin/bash
+
+WORKING_DIR="docker-monitor"
+CONTAINER_NAME="enter_container_name_or_id"
+IP="127.0.0.1"
+PORT=8080
+DISK="/"
+FROM="sender@email"
+TO=("reciever@email1" "reciever@email2" "reciever@email3")
+
+python main.py -n "${CONTAINER_NAME}" -ip "${IP}" -port ${PORT} -disk "${DISK}" -from "${FROM}" -to ${TO[@]}
+
+#EOF
