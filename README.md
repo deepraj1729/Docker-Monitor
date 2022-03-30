@@ -42,8 +42,29 @@ Using Bash:
         bash monitor.sh
     
 Using Conda:
+- First Setup conda on the VM or locally using `conda-install.sh`
+        
+        #!/bin/bash
 
-    python main.py -n CONTAINER_NAME -ip IP -port PORT -disk "/" -from FROM -to TO
+        cd ~/
+        mkdir downloads/
+        cd downloads/
+        wget https://repo.anaconda.com/miniconda/Miniconda3-py39_4.11.0-Linux-x86_64.sh
+        ./Miniconda3-py39_4.11.0-Linux-x86_64.sh
+
+        #Now logout and sign in (incase of remote VM just reconnect using ssh again)
+        ############################################################################
+        #Later run these commands
+        #python -V
+        #conda create -n ENV_NAME python=3.8
+        #conda activate ENV_NAME
+        #cd docker-monitor/
+        #pip install -r requirements.txt
+        
+        
+- Now run 
+        
+        python main.py -n CONTAINER_NAME -ip IP -port PORT -disk "/" -from FROM -to TO
 
 ## Run in Remote VMs
 This project is specifically designed to run on remote VMs and switch between VMs
