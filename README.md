@@ -1,3 +1,5 @@
+![docker](media/docker.png)
+
 # Docker-Monitor
 - Check Docker running status
 - Check Container status
@@ -9,7 +11,7 @@
 
 Entrypoint: 
     
-    -- main.py
+    main.py
 
 ## Add Health Check command inside your Dockerfile for checking Health Status
 For example running a node js application:
