@@ -15,7 +15,7 @@ Entrypoint:
 
 ## Health Check
 Add the Health Check Command in the Dockerfile consisting an application
-For example running a node js application using a docker:
+For example running a node js application using docker:
 
 Add this in Dockerfile:
 
