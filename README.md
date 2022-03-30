@@ -13,8 +13,9 @@ Entrypoint:
     
     main.py
 
-## Add Health Check command inside your Dockerfile for checking Health Status
-For example running a node js application:
+## Health Check
+Add the Health Check Command in the Dockerfile consisting an application
+For example running a node js application using a docker:
 
 Add this in Dockerfile:
 
