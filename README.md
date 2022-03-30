@@ -8,21 +8,32 @@
 - Check Disk Quota status (If disk used >= 80% then notify)
 - Notify via email (via SendGrid API)
 
+## Requirements
+- Git
+- OS running Linux (or WSL for Windows Users), MacOS
+- Sendgrid API KEY
 
-Entrypoint: 
-    
-    main.py
+## Configure API KEY
+Add the sendgrid API key in `docker_monitor/credentials.py`
+        
+        SEND_GRID_API_KEY = "ENTER_SENDGRID_API_KEY"
+        
 
 ## Health Check
 Add the Health Check Command in the Dockerfile consisting an application
-For example running a node js application using docker:
 
+For example running a node js application using docker,
 Add this in Dockerfile:
 
         HEALTHCHECK --interval=20s --timeout=5s \
         CMD npm run start || exit 1
 
 ## Run Command:
+Entrypoint: 
+    
+    main.py
+    
+    
 Using Bash:
 
 - Configure the changes in `monitor.sh`
@@ -90,6 +101,17 @@ using the `vm-ssh-script.sh`
             python main.py -n "${CONTAINER_NAME}" -ip "${IP}" -port ${PORT} -disk "/" -from "${FROM}" -to ${TO[@]}
         ENDSSH
 
+## Run this as a CronJob:
+Edit the `crontab` file and add the path to the `monitor.sh` file to run the script periodially
+        
+        crontab -e
+
+Inside the file edit these lines:
+
+        #Runs the monitor.sh every 30mins and saves the logs in case of error
+        */30 * * * * /.../monitor.sh >> /.../monitor.log 2>&1
+        
+        
 ## CLI Flags:
 Usage:
 
