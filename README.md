@@ -102,7 +102,7 @@ using the `vm-ssh-script.sh`
         ENDSSH
 
 ## Run this as a CronJob:
-Edit the `crontab` file and add the path to the `monitor.sh` file to run the script periodially
+Edit the `crontab` file and add the path to the `monitor.sh` file to run the script periodically
         
         crontab -e
 
