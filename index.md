@@ -1,4 +1,4 @@
-<img src="https://github.com/deepraj1729/Docker-Monitor/blob/main/media/docker.png">
+<img src="https://github.com/deepraj1729/Docker-Monitor/blob/main/media/docker.png" class="img-responsive" alt="">
 
 # Docker-Monitor
 - Check Docker running status
