@@ -33,25 +33,6 @@ Entrypoint:
     
     main.py
     
-    
-Using Bash:
-
-- Configure the changes in `monitor.sh`
-        
-        #!/bin/bash
-
-        WORKING_DIR="docker-monitor"
-        CONTAINER_NAME="enter_container_name_or_id"
-        IP="127.0.0.1"
-        PORT=8080
-        DISK="/"
-        FROM="sender@email"
-        TO=("reciever@email1" "reciever@email2" "reciever@email3")
-
-- Then run
-    
-        bash monitor.sh
-    
 Using Conda:
 - First Setup conda on the VM or locally using `conda-install.sh`
         
@@ -77,6 +58,24 @@ Using Conda:
         
         python main.py -n CONTAINER_NAME -ip IP -port PORT -disk "/" -from FROM -to TO
 
+Using Bash:
+
+- Configure the changes in `monitor.sh`
+        
+        #!/bin/bash
+
+        WORKING_DIR="docker-monitor"
+        CONTAINER_NAME="enter_container_name_or_id"
+        IP="127.0.0.1"
+        PORT=8080
+        DISK="/"
+        FROM="sender@email"
+        TO=("reciever@email1" "reciever@email2" "reciever@email3")
+
+- Then run
+    
+        bash monitor.sh
+        
 ## Run in Remote VMs
 This project is specifically designed to run on remote VMs and switch between VMs
 using the `vm-ssh-script.sh`
