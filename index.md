@@ -1,37 +1,132 @@
-## Welcome to GitHub Pages
+![docker](https://github.com/deepraj1729/Docker-Monitor/blob/main/media/docker.png)
 
-You can use the [editor on GitHub](https://github.com/deepraj1729/Docker-Monitor/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+# Docker-Monitor
+- Check Docker running status
+- Check Container status
+- Check Container health status
+- Check Application status
+- Check Disk Quota status (If disk used >= 80% then notify)
+- Notify via email (via SendGrid API)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Requirements
+- Git
+- OS running Linux (or WSL for Windows Users), MacOS
+- Sendgrid API KEY
 
-### Markdown
+## Configure API KEY
+Add the sendgrid API key in `docker_monitor/credentials.py`
+        
+        SEND_GRID_API_KEY = "ENTER_SENDGRID_API_KEY"
+        
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## Health Check
+Add the Health Check Command in the Dockerfile consisting an application
 
-```markdown
-Syntax highlighted code block
+For example running a node js application using docker,
+Add this in Dockerfile:
 
-# Header 1
-## Header 2
-### Header 3
+        HEALTHCHECK --interval=20s --timeout=5s \
+        CMD npm run start || exit 1
 
-- Bulleted
-- List
+## Run Command:
+Entrypoint: 
+    
+    main.py
+    
+    
+Using Bash:
 
-1. Numbered
-2. List
+- Configure the changes in `monitor.sh`
+        
+        #!/bin/bash
 
-**Bold** and _Italic_ and `Code` text
+        WORKING_DIR="docker-monitor"
+        CONTAINER_NAME="enter_container_name_or_id"
+        IP="127.0.0.1"
+        PORT=8080
+        DISK="/"
+        FROM="sender@email"
+        TO=("reciever@email1" "reciever@email2" "reciever@email3")
 
-[Link](url) and ![Image](src)
-```
+- Then run
+    
+        bash monitor.sh
+    
+Using Conda:
+- First Setup conda on the VM or locally using `conda-install.sh`
+        
+        #!/bin/bash
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+        cd ~/
+        mkdir downloads/
+        cd downloads/
+        wget https://repo.anaconda.com/miniconda/Miniconda3-py39_4.11.0-Linux-x86_64.sh
+        ./Miniconda3-py39_4.11.0-Linux-x86_64.sh
 
-### Jekyll Themes
+        #Now logout and sign in (incase of remote VM just reconnect using ssh again)
+        ############################################################################
+        #Later run these commands
+        #python -V
+        #conda create -n ENV_NAME python=3.8
+        #conda activate ENV_NAME
+        #cd docker-monitor/
+        #pip install -r requirements.txt
+        
+        
+- Now run 
+        
+        python main.py -n CONTAINER_NAME -ip IP -port PORT -disk "/" -from FROM -to TO
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/deepraj1729/Docker-Monitor/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+## Run in Remote VMs
+This project is specifically designed to run on remote VMs and switch between VMs
+using the `vm-ssh-script.sh`
 
-### Support or Contact
+        #!/bin/bash
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+        WORKING_DIR="docker-monitor"
+        CONTAINER_NAME="enter_container_name_or_id"
+        IP="127.0.0.1"
+        PORT=8080
+        DISK="/"
+        FROM="sender@email"
+        TO=("reciever@email1" "reciever@email2" "reciever@email3")
+
+        #Switch between VMs using SSH and execute docker-monitoring script
+        eval `ssh-agent` > /dev/null
+        ssh-add ~/.ssh/ssh-key >/dev/null 2>&1
+
+        ssh host@ip bash -l << ENDSSH
+            source ~/miniconda3/bin/activate docker-monitor
+            cd ${WORKING_DIR}
+            python main.py -n "${CONTAINER_NAME}" -ip "${IP}" -port ${PORT} -disk "/" -from "${FROM}" -to ${TO[@]}
+        ENDSSH
+
+## Run this as a CronJob:
+Edit the `crontab` file and add the path to the `monitor.sh` file to run the script periodically
+        
+        crontab -e
+
+Inside the file edit these lines:
+
+        #Runs the monitor.sh every 30mins and saves the logs in case of error
+        */30 * * * * /.../monitor.sh >> /.../monitor.log 2>&1
+        
+        
+## CLI Flags:
+Usage:
+
+    $ python main.py -h
+    usage: main.py [-h] [-v] -n N -ip IP -port PORT -disk DISK -from_ FROM_ -to_ TO_ [TO_ ...]
+
+    Docker-Monitor: A script to monitor your docker containers runinng in different VMs
+
+    optional arguments:
+    -h, --help          show this help message and exit
+    -v                  show program's version number and exit
+    -n N                Pass the Container NAME/ID
+    -ip IP              Pass the local IP (e.g: 127.0.0.1) of the VM
+    -port PORT          Pass the PORT number where the docker app is exposed (e.g 8080)
+    -disk DISK          Pass the disk mount path to check for disk quota stats (e.g. '/')
+    -from_ FROM_        Sender Mail (Required for sending notifications for the Container status)
+    -to_ TO_ [TO_ ...]  Pass the receiver mail id/ids (will be taken as a list)
+
