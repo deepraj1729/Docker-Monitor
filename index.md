@@ -1,4 +1,4 @@
-![docker](https://github.com/deepraj1729/Docker-Monitor/blob/main/media/docker.png)
+<img src="https://github.com/deepraj1729/Docker-Monitor/blob/main/media/docker.png">
 
 # Docker-Monitor
 - Check Docker running status
