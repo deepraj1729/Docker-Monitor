@@ -30,4 +30,6 @@ class SendGridEmail:
                     print("     EMAIL STATUS: Something Went Wrong.")
 
         except Exception as e:
+            print("     EMAIL STATUS: Something Went Wrong.")
+            print(f"     {e}")
             exit()

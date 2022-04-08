@@ -1,7 +1,7 @@
 from docker_monitor.monitor import DockerMonitor
 import argparse
 
-VERSION="1.0.0"
+VERSION="1.0.1"
 
 def main():
     parser = argparse.ArgumentParser(description="Docker-Monitor: A script to monitor your docker containers runinng in different VMs")
