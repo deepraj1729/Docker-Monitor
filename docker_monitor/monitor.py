@@ -38,6 +38,7 @@ class DockerMonitor:
         now = datetime.now()
         time_stamp = now.strftime("%d/%m/%Y %H:%M:%S")
         self.logs_time_stamp = f"\n[ {time_stamp} ]"
+        self.logger = {}
 
         #mail flags
         self.from_ = None
